@@ -5,25 +5,22 @@ import { GrFormPrevious, GrFormNext } from 'react-icons/gr'
 const App = () => {
   const [index, setIndex] = useState(0)
   const { name, job, image, text } = people[index]
-  const prevPerson = (index) => {
-    if (index === 0) {
-      setIndex(people.length - 1)
-    } else {
-      setIndex(index - 1)
-    }
-  }
 
   const nextPerson = (index) => {
-    if (index === people.length - 1) {
-      setIndex(0)
-    } else {
-      setIndex(index + 1)
-    }
+    const newIndex = (index + 1) % people.length
+    setIndex(newIndex)
+  }
+
+  const prevPerson = (index) => {
+    const newIndex = (index - 1 + people.length) % people.length
+    setIndex(newIndex)
   }
 
   const randomPerson = () => {
-    const randomNum = Math.random() * people.length
-    const randomIndex = Math.floor(randomNum)
+    let randomIndex = Math.floor(Math.random() * people.length)
+    if (randomIndex === index) {
+      randomIndex = (randomIndex + 1) % people.length
+    }
     setIndex(randomIndex)
   }
   return (
@@ -48,7 +45,7 @@ const App = () => {
           >
             <GrFormPrevious />
           </button>
-          <button type="button" className="prev-btn">
+          <button type="button" className="next-btn">
             <GrFormNext
               onClick={() => {
                 nextPerson(index)
@@ -56,7 +53,7 @@ const App = () => {
             />
           </button>
         </div>
-        <button type="btn" className="btn" onClick={randomPerson}>
+        <button type="btn" className="btn btn-hipster" onClick={randomPerson}>
           surprise me
         </button>
       </section>
